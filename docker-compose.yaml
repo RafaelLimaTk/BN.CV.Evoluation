@@ -1,0 +1,61 @@
+version: '3.8'
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: '@AF95b0294374a3t'
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - rabbitmq_net
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    environment:
+      RABBITMQ_DEFAULT_USER: bc.nv.evaluation
+      RABBITMQ_DEFAULT_PASS: 8a72a1ac-5728-4ba2-9e89-472251b6185c
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - "rabbitmq_data:/var/lib/rabbitmq"
+    networks:
+      - rabbitmq_net
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --requirepass adab1cd7-7f1c-4b07-a4df-8ee3810186fc
+    networks:
+      - rabbitmq_net
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongodb_container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: fb2cae03-dab3-41cb-82ae-8cff26a70da6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - rabbitmq_net
+
+volumes:
+  sql_data:
+  rabbitmq_data:
+  redis-data:
+  mongo-data:
+    driver: local
+
+networks:
+  rabbitmq_net:
+   driver: bridge
