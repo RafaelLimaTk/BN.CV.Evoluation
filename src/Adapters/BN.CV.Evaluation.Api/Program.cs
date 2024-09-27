@@ -1,6 +1,7 @@
 using Infra.Data.Context;
 using Infra.Ioc.Configuration;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +22,7 @@ var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<DbWriteContext>();
-//dbContext.Database.Migrate();
+dbContext.Database.Migrate();
 
 app.ConfigureApp(builder.Configuration);
 

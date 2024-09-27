@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Application\Application.csproj" />
     <ProjectReference Include="..\..\Core\Infra.Data\Infra.Data.csproj" />
+    <ProjectReference Include="..\..\Core\Infra.Ioc\Infra.Ioc.csproj" />
   </ItemGroup>
 
 </Project>
